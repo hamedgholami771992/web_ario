@@ -1,5 +1,3 @@
-// src/dto/provider1-job.dto.ts
-
 import {
   IsString,
   IsArray,

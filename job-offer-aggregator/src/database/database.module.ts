@@ -12,21 +12,6 @@ import { ConfigModule } from '@/config/config.module';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService<EnvironmentVarTypes, true>) => {
         const dbConfig = configService.get('database', { infer: true })!;
-        if (process.env.NODE_ENV === 'test') {
-          return {
-            type: 'postgres',
-            host: dbConfig.host,
-            port: dbConfig.port+1,
-            username: dbConfig.username,
-            password: dbConfig.password,
-            database: `${dbConfig.database}_test`,
-            autoLoadEntities: true,
-            synchronize: true, // or use migrations if you prefer
-            dropSchema: true,   // reset DB on each test run
-            logging: false,
-          };
-        } 
-
         
         return {
           type: 'postgres',

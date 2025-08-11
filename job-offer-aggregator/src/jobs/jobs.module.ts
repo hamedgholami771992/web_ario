@@ -10,7 +10,6 @@ import { JobTypesModule } from '@/job-types/job-types.module';
 import { CurrenciesModule } from '@/currencies/currencies.module';
 import { SkillsModule } from '@/skills/skills.module';
 import { EmployersModule } from '@/employers/employers.module';
-// import { ProvidersModule } from '@/providers/providers.module';
 import { LocationsModule } from '@/locations/locations.module';
 import { IndustriesModule } from '@/industries/industries.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -24,14 +23,12 @@ import { HealthController } from './health.controller';
   imports: [
     ConfigModule,
     TypeOrmModule.forFeature([Job]),
-
     LoggerModule,
     ProviderEntitiesModule,
     JobTypesModule,
     CurrenciesModule,
     SkillsModule,
     EmployersModule,
-    // ProvidersModule,
     LocationsModule,
     IndustriesModule
   ],

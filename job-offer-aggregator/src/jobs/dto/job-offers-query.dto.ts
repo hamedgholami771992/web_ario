@@ -1,8 +1,7 @@
-import { IsOptional, IsString, IsBooleanString, IsInt, Min, IsNumberString, IsEnum, IsBoolean, IsNumber, IsArray, IsISO8601, IsDate } from 'class-validator';
+import { IsOptional, IsString, IsInt, Min, IsBoolean, IsNumber, IsArray, IsDate } from 'class-validator';
 import { Type } from 'class-transformer';
-import { ProviderEnum } from '@/common/enums/provider.enum';
 import { boolean, number, string } from 'joi';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class JobOffersQueryDto {
     @ApiPropertyOptional({ description: 'Job title or keywords to search for', example: 'Software Engineer' })

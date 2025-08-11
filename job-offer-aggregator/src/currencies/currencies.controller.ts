@@ -1,4 +1,4 @@
-import { Body, Controller, HttpException, HttpStatus, Param, ParseIntPipe, Patch } from '@nestjs/common';
+import { Body, Controller, Param, ParseIntPipe, Patch } from '@nestjs/common';
 import { CurrenciesService } from './currencies.service';
 import { UpdateCurrencyDto } from './dtos/update-currency.dto';
 
