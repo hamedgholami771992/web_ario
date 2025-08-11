@@ -4,8 +4,6 @@ import { ConfigService } from '@nestjs/config';
 import { EnvironmentVarTypes } from '@/config/env.types';
 import { LoggerService } from '@/common/logger/logger.service';
 import { AllExceptionsFilter } from '@/common/filters/all-exceptions.filter';
-import { runSeeders } from '@/database/seed';
-import { ProviderEnum } from '@/common/enums/provider.enum';
 import { JobApiModule } from './job-api.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
