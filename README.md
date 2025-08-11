@@ -27,7 +27,7 @@ running tests:
 
 
 
-
+post req payload /api/job-offers
 {
     "title": "Software Engineer",
     "city": "San Francisco",
