@@ -1,0 +1,59 @@
+{
+    "status": "success",
+    "data": {
+        "jobsList": {
+            "job-351": {
+                "position": "Frontend Developer",
+                "location": {
+                    "city": "San Francisco",
+                    "state": "NY",
+                    "remote": true
+                },
+                "compensation": {
+                    "min": 55000,
+                    "max": 101000,
+                    "currency": "USD"
+                },
+                "employer": {
+                    "companyName": "TechCorp",
+                    "website": "https://techcorp.com"
+                },
+                "requirements": {
+                    "experience": 3,
+                    "technologies": [
+                        "Java",
+                        "Spring Boot",
+                        "AWS"
+                    ]
+                },
+                "datePosted": "2025-08-05"
+            },
+            "job-340": {
+                "position": "Data Scientist",
+                "location": {
+                    "city": "Seattle",
+                    "state": "TX",
+                    "remote": true
+                },
+                "compensation": {
+                    "min": 50000,
+                    "max": 90000,
+                    "currency": "USD"
+                },
+                "employer": {
+                    "companyName": "Creative Design Ltd",
+                    "website": "https://backendsolutions.com"
+                },
+                "requirements": {
+                    "experience": 5,
+                    "technologies": [
+                        "JavaScript",
+                        "Node.js",
+                        "React"
+                    ]
+                },
+                "datePosted": "2025-08-05"
+            }
+        }
+    }
+}

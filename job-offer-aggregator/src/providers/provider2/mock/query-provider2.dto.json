@@ -1,0 +1,46 @@
+{
+    "metadata": {
+        "requestId": "req-dfjwr7jfi",
+        "timestamp": "2025-08-07T10:11:01.527Z"
+    },
+    "jobs": [
+        {
+            "jobId": "P1-667",
+            "title": "Frontend Developer",
+            "details": {
+                "location": "San Francisco, CA",
+                "type": "Full-Time",
+                "salaryRange": "$72k - $119k"
+            },
+            "company": {
+                "name": "Creative Design Ltd",
+                "industry": "Analytics"
+            },
+            "skills": [
+                "HTML",
+                "CSS",
+                "Vue.js"
+            ],
+            "postedDate": "2025-08-02T22:01:34.116Z"
+        },
+        {
+            "jobId": "P1-876",
+            "title": "Data Scientist",
+            "details": {
+                "location": "Austin, TX",
+                "type": "Full-Time",
+                "salaryRange": "$61k - $134k"
+            },
+            "company": {
+                "name": "Creative Design Ltd",
+                "industry": "Design"
+            },
+            "skills": [
+                "Java",
+                "Spring Boot",
+                "AWS"
+            ],
+            "postedDate": "2025-08-03T13:40:34.634Z"
+        }
+    ]
+}

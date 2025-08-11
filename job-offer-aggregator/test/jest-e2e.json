@@ -1,0 +1,18 @@
+{
+  "moduleFileExtensions": ["ts", "js", "json"],
+  "rootDir": "../",
+  "testRegex": "test/e2e/.*\\.spec\\.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "coverageDirectory": "./coverage-e2e",
+  "testEnvironment": "node",
+  "globals": {
+    "ts-jest": {
+      "tsconfig": "tsconfig.build.json"
+    }
+  },
+  "moduleNameMapper": {
+    "^@/(.*)$": "<rootDir>/src/$1"
+  }
+}

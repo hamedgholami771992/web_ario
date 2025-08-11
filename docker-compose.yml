@@ -1,0 +1,140 @@
+version: '3.8'
+
+services:
+  # PostgreSQL with healthcheck & persistent storage
+  postgres:
+    image : postgres:16
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: devuser
+      POSTGRES_PASSWORD: devpass
+      POSTGRES_DB: devdb
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "devuser"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: 12345
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq   
+
+  job-api:
+    build: ./job-offer-aggregator
+    container_name: job-api
+    restart: always
+    command:  >
+      /bin/sh -c "
+      npm run migration:generate-init || true &&
+      npm run migration:run || true &&
+      npm run seed || true &&
+      node dist/apps/job-api/main.js
+      "
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=devuser
+      - DB_PASSWORD=devpass
+      - DB_DATABASE=devdb
+      - PROVIDER1_API_URL=https://assignment.devotel.io/api/provider1/jobs
+      - PROVIDER2_API_URL=https://assignment.devotel.io/api/provider2/jobs
+      - CRON_SCHEDULE=*/15 * * * *
+      - FETCH_TIMEOUT=10000
+      - LOG_LEVEL=debug
+      - RABBITMQ_URL=amqp://user:12345@rabbitmq:5672
+      - JOB_FETCHER_QUEUE=job_fetcher_queue
+      - JOB_API_QUEUE=job_api_queue
+      - SCHEDULER_QUEUE=scheduler_queue
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      # test: ["CMD-SHELL", "curl -f http://localhost:3000/health || exit 1"]
+      test: ["CMD", "nc", "-z", "localhost", "3000"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  job-fetcher:
+    build: ./job-offer-aggregator
+    container_name: job-fetcher
+    restart: always
+    command: ["node", "dist/apps/job-fetcher/main.js"]
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=devuser
+      - DB_PASSWORD=devpass
+      - DB_DATABASE=devdb
+      - PROVIDER1_API_URL=https://assignment.devotel.io/api/provider1/jobs
+      - PROVIDER2_API_URL=https://assignment.devotel.io/api/provider2/jobs
+      - CRON_SCHEDULE=*/15 * * * *
+      - FETCH_TIMEOUT=10000
+      - LOG_LEVEL=debug
+      - RABBITMQ_URL=amqp://user:12345@rabbitmq:5672
+      - JOB_FETCHER_QUEUE=job_fetcher_queue
+      - JOB_API_QUEUE=job_api_queue
+      - SCHEDULER_QUEUE=scheduler_queue
+    depends_on:
+      job-api:
+        condition: service_healthy
+
+  scheduler:
+    build: ./job-offer-aggregator
+    container_name: scheduler
+    restart: always
+    command: ["node", "dist/apps/scheduler/main.js"]
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=devuser
+      - DB_PASSWORD=devpass
+      - DB_DATABASE=devdb
+      - PROVIDER1_API_URL=https://assignment.devotel.io/api/provider1/jobs
+      - PROVIDER2_API_URL=https://assignment.devotel.io/api/provider2/jobs
+      - CRON_SCHEDULE=*/15 * * * *
+      - FETCH_TIMEOUT=10000
+      - LOG_LEVEL=debug
+      - RABBITMQ_URL=amqp://user:12345@rabbitmq:5672
+      - JOB_FETCHER_QUEUE=job_fetcher_queue
+      - JOB_API_QUEUE=job_api_queue
+      - SCHEDULER_QUEUE=scheduler_queue
+    depends_on:
+      job-fetcher:
+        condition: service_started
+
+volumes:
+  pgdata:
+    driver: local
+  rabbitmq-data:
+    driver: local
